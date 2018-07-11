@@ -3,13 +3,13 @@ namesex
 
 Namesex is a package that predicts the gender tendency of a Chinese given name. This module comes with two prediction models trained on 10,730 Chinese given names (in traditional Chinese) with reliable gender lables collected from public data. The first prediction model is a random forest classifier that can be invoked by predict(). This model takes three types of features: the given name, the unigram of given name, and a vector of size one hundred extracted from a skip-gram word-to-vector model trained separately using a news corpus collected from tw.yahoo.com. This news corpus contains 87,848,812 Chinese characters.
 
-If the given name contains more than character, all vectors of each characters are pool by a "maximum diverge" process. Consider a given name with two characters. Let v_1 and v_2 be the vectors extracted from the trained skip-gram model, the the maximum diverge process pools v_1 and and v_2 by setting the pooled vector u = (u_1, u_2, ..., u_100) to u_j = u_j^+ + u_j^-, where u_j^+ = max(v_1j^+, v_2j^+) and u_j^- = min(v_2j^-, v_2j^-). Here v_1j^+ is the positive part of v_1j and v_1j^- is the negative part of v_1j. The reason to use maximum diverge instead of simple maximum is because the trained skip-gram vector may be positive or negative value. This procedure can preserve the value that is farthest from the origin in each dimension.
-
 The second prediction model is a L2 regularized logistic regression that can be invoked by predict_logic(). This model uses the given names and the unigrams of given names only. Both prediction methods take a list of names and output predicted gender tendency (1 for male and 0 for female) or probability of being a male name.
 
 While gensim was used to train the skip-gram word2vec model, this project does not depend on gensim because the trained model was extracted to a dictionary structure for the convenient use of this project.  This project, nonetheless, depends on numpy, scipy, and sklearn. Windows users may want to install numpy, scipy, and sklearn using pre-compiled binary packages before installing namesex via pip. If you just want something that "just work" and does not want to install sklearn, consider using the sister project, namesex_light, that depends only on numpy. Namesex_light provides the same preduction function using a regularized logistic regression trained on the same dataset. Namesex_light should be faster than the predict() here. The prediction accuracy of namesex_light, however, is lower than the predict() function in namesex.
 
+Additional information about namesex and namesex_light can be found in another [document]_.
 
+.. [document]:https://github.com/hsinmin/namesex/blob/master/vignettee_namesex_exp1.ipynb
 
 The prediction performance of the random forest and logistic regression models evaluated by ten-fold cross validation is listed below.
 
