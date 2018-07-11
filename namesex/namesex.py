@@ -10,6 +10,10 @@ class namesex:
     def __init__(self, n_jobs=-1, n_estimators = 500, loadmodel = True, \
                    w2v_filename = \
                    pkg_resources.resource_filename('namesex', 'model/w2v_dictvec_sg_s100i20.pickle')):
+        import platform
+        from pathlib import Path
+
+
         self.gname_count = dict()
         self.gnameug_count = dict()
         self.feat_dict = dict()
@@ -29,11 +33,29 @@ class namesex:
         firstchar = next(iter(self.w2v_dictvec.keys()))
         self.w2v_vecsize = len(self.w2v_dictvec[firstchar])
 
-        if loadmodel:
-            self.load_coef()
-            #print("Loading pre-trained random forest model...")
-            self.load_rf_model()
-            #print("   ....done.")
+        if platform.architecture()[0] == '64bit':
+            if loadmodel:
+                self.load_coef()
+                #print("Loading pre-trained random forest model...")
+                self.load_rf_model()
+                #print("   ....done.")
+        else:
+            flagfn = pkg_resources.resource_filename("namesex", 'model/self_trained_model.flag')
+            theflag = Path(flagfn)
+            if loadmodel:
+                if theflag.is_file():
+                    self.load_coef()
+                    # print("Loading pre-trained random forest model...")
+                    self.load_rf_model()
+                else:
+                    print("!!!!Error!!!!\nThe pre-trained model only support 64bit platform." + \
+                          " Consider do the training by yourself.\n" + \
+                          " If you want to do this, simply run:\n" + \
+                          "==========\nimport namesex\n" +
+                          "ns = namesex.namesex(loadmodel = False)\n" + \
+                          "ns.run_train_routine()\n==========\n")
+                    raise Exception('Platform_not_supported')
+
 
     def gen_feature_id(self, namevec, min_ugram = 2, min_gname = 2):
         for gname in namevec:
@@ -163,6 +185,39 @@ class namesex:
 
         x2_train = self.gen_feat_array_w2v(namevec)
         self.rfmodel.fit(x2_train, y_train)
+
+    def run_train_routine(self, ):
+        import datetime, csv
+        f = open(pkg_resources.resource_filename("namesex", 'data/namesex_data_v2.csv'), 'r', newline='',
+                 encoding='utf8')
+        mydata = csv.DictReader(f)
+        sexlist = []
+        namelist = []
+        foldlist = []
+        for arow in mydata:
+            sexlist.append(int(arow['sex'].strip()))
+            gname = arow['gname'].strip()
+            namelist.append(gname)
+            foldlist.append(int(arow['fold'].strip()))
+
+        sexlist = np.asarray(sexlist)
+        namelist = np.asarray(namelist)
+        foldlist = np.asarray(foldlist)
+        f.close()
+
+        np.random.seed(1034)
+        # do not load the trained model
+        #ns = namesex.namesex(loadmodel=False)
+        print("Training models (logistic reg and random forest)")
+        self.train(namelist, sexlist)
+        print("training completed.")
+        print("saving model.")
+        self.export_model()
+        print("All done. You can use namesex to predict now!")
+        f2 = open(pkg_resources.resource_filename("namesex", 'model/self_trained_model.flag'), \
+                 'w', newline='', encoding='utf8')
+        f2.write(str(datetime.datetime.now()) + "\n")
+        f2.close()
 
     def predict(self, namevec, predprob = False):
         #this model will not be updated, at least for now

@@ -9,7 +9,7 @@ def readme():
 setup(
   name='namesex',
   packages = ['namesex'],
-  version = '0.1.12',
+  version = '0.1.21',
   description='A gender classifier for Chinese given names',
   author = 'Hsin-Min Lu, Yu-Lun Li, Chi-Yu Lin',
   author_email = 'luim@ntu.edu.tw',
@@ -39,7 +39,7 @@ setup(
         'Programming Language :: Python :: 3.7',
     ],
   keywords = ['classify_sex Chinese_given_name'],
-  install_requires=['numpy', 'sklearn'],
+  install_requires=['numpy', 'sklearn', 'scipy'],
   zip_safe=False,
   package_data={'':['data/*', 'model/*']},
   test_suite='nose.collector',

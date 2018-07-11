@@ -7,7 +7,7 @@ import csv
 #load data from the csv file
 class testdata:
     def __init__(self):
-        filename = pkg_resources.resource_filename('namesex_light', 'data/testdata.csv')
+        filename = pkg_resources.resource_filename('namesex', 'data/testdata.csv')
         f = open(filename, 'r', newline='', encoding = 'utf8')
         mydata = csv.DictReader(f)
         sexlist = []
@@ -22,9 +22,9 @@ class testdata:
 
 
 if __name__ == "__main__":
-    import namesex_light
+    import namesex
     testdata = testdata()
-    nsl = namesex_light.namesex_light()
+    nsl = namesex.namesex()
     pred = nsl.predict(testdata.gname)
     print("The first 5 given names are: {}".format(testdata.gname[0:5]))
     print("    and their sex:          {}".format(testdata.sex[0:5]))
