@@ -9,7 +9,7 @@ While gensim was used to train the skip-gram word2vec model, this project does n
 
 Additional information about namesex and namesex_light can be found in another document_.
 
-.. document:https://github.com/hsinmin/namesex/blob/master/vignettee_namesex_exp1.ipynb
+.. document: https://github.com/hsinmin/namesex/blob/master/vignettee_namesex_exp1.ipynb
 
 The prediction performance of the random forest and logistic regression models evaluated by ten-fold cross validation is listed below.
 
