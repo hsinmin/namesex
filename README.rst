@@ -7,9 +7,7 @@ The second prediction model is a L2 regularized logistic regression that can be 
 
 While gensim was used to train the skip-gram word2vec model, this project does not depend on gensim because the trained model was extracted to a dictionary structure for the convenient use of this project.  This project, nonetheless, depends on numpy, scipy, and sklearn. Windows users may want to install numpy, scipy, and sklearn using pre-compiled binary packages before installing namesex via pip. If you just want something that "just work" and does not want to install sklearn, consider using the sister project, namesex_light, that depends only on numpy. Namesex_light provides the same preduction function using a regularized logistic regression trained on the same dataset. Namesex_light should be faster than the predict() here. The prediction accuracy of namesex_light, however, is lower than the predict() function in namesex.
 
-Additional information about namesex and namesex_light can be found in another document_.
-
-.. document: https://github.com/hsinmin/namesex/blob/master/vignettee_namesex_exp1.ipynb
+Additional information about namesex and namesex_light can be found in another `document <https://github.com/hsinmin/namesex/blob/master/vignettee_namesex_exp1.ipynb>`_.
 
 The prediction performance of the random forest and logistic regression models evaluated by ten-fold cross validation is listed below.
 
