@@ -64,7 +64,7 @@ The model was trained using given names only. As a result, for the best performa
 
 In the above example, the family name has a minor effect on the prediction. Concatenating a male and female name somehow neutralize (toward 0.5) the gender tendency.
 
-Testing Dataset
+Test Dataset
 ---------------
 
 This package comes with a small testing dataset that was not used for model training. The following sample code illustrate a simple usage.::
